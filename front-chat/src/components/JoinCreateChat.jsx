@@ -80,65 +80,70 @@ const JoinCreateChat = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center ">
-      <div className="p-10 dark:border-gray-700 border w-full flex flex-col gap-5 max-w-md rounded dark:bg-gray-900 shadow">
-        <div>
-          <img src={chatIcon} className="w-24 mx-auto" />
-        </div>
+  <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+    <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-xl shadow-xl p-6">
+      
+      {/* Icon */}
+      <div className="flex justify-center mb-4">
+        <img src={chatIcon} className="w-16 opacity-90" />
+      </div>
 
-        <h1 className="text-2xl font-semibold text-center ">
-          Join Room / Create Room ..
-        </h1>
-        {/* name div */}
-        <div className="">
-          <label htmlFor="name" className="block font-medium mb-2">
-            Your name
-          </label>
-          <input
-            onChange={handleFormInputChange}
-            value={detail.userName}
-            type="text"
-            id="name"
-            name="userName"
-            placeholder="Enter the name"
-            className="w-full dark:bg-gray-600 px-4 py-2 border dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+      {/* Title */}
+      <h1 className="text-xl font-semibold text-center mb-1">
+        Join a Room
+      </h1>
+      <p className="text-sm text-gray-400 text-center mb-6">
+        Enter a room ID to join or create a new one
+      </p>
 
-        {/* room id div */}
-        <div className="">
-          <label htmlFor="name" className="block font-medium mb-2">
-            Room ID / New Room ID
-          </label>
-          <input
-            name="roomId"
-            onChange={handleFormInputChange}
-            value={detail.roomId}
-            type="text"
-            id="name"
-            placeholder="Enter the room id"
-            className="w-full dark:bg-gray-600 px-4 py-2 border dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+      {/* Username */}
+      <div className="mb-4">
+        <label className="block text-xs font-semibold uppercase text-gray-400 mb-1">
+          Username
+        </label>
+        <input
+          type="text"
+          name="userName"
+          value={detail.userName}
+          onChange={handleFormInputChange}
+          placeholder="Enter your name"
+          className="w-full bg-gray-800 border border-gray-700 text-sm px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
-        {/* button  */}
-        <div className="flex justify-center gap-2 mt-4">
-          <button
-            onClick={joinChat}
-            className="px-3 py-2 dark:bg-blue-500 hover:dark:bg-blue-800 rounded-full"
-          >
-            Join Room
-          </button>
-          <button
-            onClick={createRoom}
-            className="px-3 py-2 dark:bg-orange-500 hover:dark:bg-orange-800 rounded-full"
-          >
-            Create Room
-          </button>
-        </div>
+      {/* Room ID */}
+      <div className="mb-6">
+        <label className="block text-xs font-semibold uppercase text-gray-400 mb-1">
+          Room ID
+        </label>
+        <input
+          type="text"
+          name="roomId"
+          value={detail.roomId}
+          onChange={handleFormInputChange}
+          placeholder="Enter room ID"
+          className="w-full bg-gray-800 border border-gray-700 text-sm px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-3">
+        <button
+          onClick={joinChat}
+          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-md transition"
+        >
+          Join Room
+        </button>
+        <button
+          onClick={createRoom}
+          className="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-100 text-sm font-medium py-2 rounded-md transition"
+        >
+          Create Room
+        </button>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default JoinCreateChat;
