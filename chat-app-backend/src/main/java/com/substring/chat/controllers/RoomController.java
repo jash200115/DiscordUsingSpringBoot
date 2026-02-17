@@ -3,20 +3,14 @@ package com.substring.chat.controllers;
 import com.substring.chat.entities.Message;
 import com.substring.chat.entities.Room;
 import com.substring.chat.repositories.RoomRepository;
-import lombok.Getter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/rooms")
-@CrossOrigin("http://localhost:5173")
 public class RoomController {
 
     private RoomRepository roomRepository;
@@ -42,7 +36,6 @@ public class RoomController {
         room.setRoomId(roomId);
         Room savedRoom = roomRepository.save(room);
         return ResponseEntity.status(HttpStatus.CREATED).body(room);
-
 
     }
 

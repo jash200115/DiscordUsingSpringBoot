@@ -80,25 +80,26 @@ const JoinCreateChat = () => {
   }
 
   return (
-  <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-    <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-xl shadow-xl p-6">
+  <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+    <div className="w-full max-w-md bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl p-8">
       
       {/* Icon */}
-      <div className="flex justify-center mb-4">
-        <img src={chatIcon} className="w-16 opacity-90" />
+      <div className="flex justify-center mb-6">
+        <img src={chatIcon} className="w-16 opacity-95" />
       </div>
 
       {/* Title */}
-      <h1 className="text-xl font-semibold text-center mb-1">
+      <h1 className="text-2xl font-bold text-white text-center mb-2">
         Join a Room
       </h1>
-      <p className="text-sm text-gray-400 text-center mb-6">
-        Enter a room ID to join or create a new one
+
+      <p className="text-sm text-gray-400 text-center mb-8">
+        Enter a Room ID to join an existing room or create a new one.
       </p>
 
       {/* Username */}
-      <div className="mb-4">
-        <label className="block text-xs font-semibold uppercase text-gray-400 mb-1">
+      <div className="mb-5">
+        <label className="block text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
           Username
         </label>
         <input
@@ -107,13 +108,13 @@ const JoinCreateChat = () => {
           value={detail.userName}
           onChange={handleFormInputChange}
           placeholder="Enter your name"
-          className="w-full bg-gray-800 border border-gray-700 text-sm px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
         />
       </div>
 
       {/* Room ID */}
-      <div className="mb-6">
-        <label className="block text-xs font-semibold uppercase text-gray-400 mb-1">
+      <div className="mb-8">
+        <label className="block text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
           Room ID
         </label>
         <input
@@ -122,21 +123,22 @@ const JoinCreateChat = () => {
           value={detail.roomId}
           onChange={handleFormInputChange}
           placeholder="Enter room ID"
-          className="w-full bg-gray-800 border border-gray-700 text-sm px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm px-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
         />
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3">
+      <div className="flex gap-4">
         <button
           onClick={joinChat}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-md transition"
+          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-lg transition duration-200"
         >
           Join Room
         </button>
+
         <button
           onClick={createRoom}
-          className="flex-1 bg-gray-700 hover:bg-gray-600 text-gray-100 text-sm font-medium py-2 rounded-md transition"
+          className="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2.5 rounded-lg transition duration-200"
         >
           Create Room
         </button>
