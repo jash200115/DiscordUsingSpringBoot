@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "users")
 @Data
 @NoArgsConstructor
@@ -16,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
 
     @Id
-    private String Id;
+    private String id;
 
     @Indexed(unique = true)
     private String email;
@@ -24,4 +26,6 @@ public class User {
     private String username;
 
     private String password;
+
+    private List<String> roles;
 }

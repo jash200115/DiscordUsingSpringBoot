@@ -6,9 +6,13 @@ import com.substring.chat.playload.LoginRequest;
 import com.substring.chat.playload.RegisterRequest;
 import com.substring.chat.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,6 +35,7 @@ public class AuthController {
                 .email(request.getEmail())
                 .username(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .roles(List.of("ROLE_USER"))
                 .build();
 
         userRepository.save(user);
@@ -41,16 +46,23 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-        User user = userRepository.findById(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("User not found");
         }
 
-        String token = jwtUtil.generateToken(user.getEmail());
+        User user = optionalUser.get();
 
-        return ResponseEntity.ok().body(token);
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid credentials");
+        }
+
+        String token = jwtUtil.generateToken(user);
+
+        return ResponseEntity.ok(token);
     }
 
 }
