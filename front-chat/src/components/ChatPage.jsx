@@ -29,9 +29,9 @@ const ChatPage = () => {
   // Redirect if not connected
   useEffect(() => {
     if (!connected) {
-      navigate("/");
+      navigate("/join");
     }
-  }, [connected, navigate]);
+  }, [connected]);
 
   // Load previous messages
   useEffect(() => {
@@ -107,9 +107,6 @@ const ChatPage = () => {
   const handleLogout = () => {
     if (stompClient) stompClient.deactivate();
     setConnected(false);
-    setRoomId("");
-    setCurrentUser("");
-    navigate("/");
   };
 
   const handleWhiteboardOpen = () => {
