@@ -1,8 +1,12 @@
 package com.substring.chat.repositories;
 
-import com.substring.chat.entities.User;
+import com.substring.chat.entities.NexchatConversation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface NexchatRepository extends MongoRepository<User, String> {
+import java.util.Optional;
 
+public interface NexchatRepository extends MongoRepository<NexchatConversation, String> {
+
+    // Spring Data auto-generates the query from method name
+    Optional<NexchatConversation> findByUsername(String username);
 }

@@ -1,15 +1,10 @@
 package com.substring.chat.playload;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+
+@Data
 public class NextchatRequest {
     String username;
-    String query;
+    String question;
 }
