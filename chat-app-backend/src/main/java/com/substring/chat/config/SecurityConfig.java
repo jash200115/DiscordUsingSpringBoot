@@ -27,10 +27,12 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())  // disable CSRF for APIs
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/v1/nexchat/**").permitAll()
                         .requestMatchers("/chat/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/user/**").hasRole("USER")
