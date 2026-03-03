@@ -20,3 +20,8 @@ export const getMessagess = async (roomId, size = 50, page = 0) => {
   );
   return response.data;
 };
+
+export const getAllRoomsApi = async () => {
+  const response = await httpClient.get(`/api/v1/rooms`);
+  return response.data;
+};

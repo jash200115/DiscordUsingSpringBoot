@@ -78,5 +78,10 @@ public class RoomController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<List<Room>> getAllRooms() {
+        List<Room> rooms = roomRepository.findAll();
+        return ResponseEntity.ok(rooms);
+    }
 
 }

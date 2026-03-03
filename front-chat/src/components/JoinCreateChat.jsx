@@ -2,8 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import useChatContext from "../context/ChatContext";
-import { createRoomApi, joinChatApi } from "../services/RoomService";
+import { createRoomApi, joinChatApi, getAllRoomsApi } from "../services/RoomService";
 import { httpClient } from "../config/AxiosHelper";
+import { useAuth } from "../auth/AuthContext";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const stringToColor = (str) => {
@@ -11,12 +12,6 @@ const stringToColor = (str) => {
   for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
   return `hsl(${hash % 360}, 55%, 40%)`;
 };
-
-const MOCK_ROOMS = [
-  { roomId: "general", members: 12, active: true },
-  { roomId: "dev-talk", members: 5, active: true },
-  { roomId: "random", members: 8, active: false },
-];
 
 // ─── Create Room Modal ────────────────────────────────────────────────────────
 function CreateRoomModal({ onClose, onCreate }) {
@@ -316,24 +311,37 @@ function AiChatPanel({ username }) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const JoinCreateChat = () => {
-  const [detail, setDetail] = useState({ roomId: "", userName: "" });
-  const [rooms] = useState(MOCK_ROOMS);
+  const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [hoveredRoom, setHoveredRoom] = useState(null);
+  const { username } = useAuth();
+  const [detail, setDetail] = useState({ roomId: "" });
 
   const { setRoomId, setCurrentUser, setConnected } = useChatContext();
   const navigate = useNavigate();
 
+  useEffect(() => {
+  async function fetchRooms() {
+      try {
+        const data = await getAllRoomsApi();
+        setRooms(data);
+      } catch (error) {
+        toast.error("Failed to load rooms");
+      }
+    }
+    fetchRooms();
+  }, []);
+
   async function handleJoinRoom(roomId) {
-    if (!detail.userName.trim()) {
-      toast.error("Please enter your username first!");
+    if (!username?.trim()) {
+      toast.error("You must be logged in!");
       return;
     }
     try {
       const room = await joinChatApi(roomId);
       toast.success(`Joined #${room.roomId}!`);
-      setCurrentUser(detail.userName);
+      setCurrentUser(username);   // ✅ use from JWT
       setRoomId(room.roomId);
       setConnected(true);
       navigate("/chat");
@@ -344,11 +352,10 @@ const JoinCreateChat = () => {
 
   async function handleCreateRoom(roomId) {
     if (!roomId.trim()) { toast.error("Room ID cannot be empty"); return; }
-    if (!detail.userName.trim()) { toast.error("Please enter your username first!"); return; }
     try {
       const response = await createRoomApi(roomId.trim());
       toast.success(`Room #${response.roomId} created!`);
-      setCurrentUser(detail.userName);
+      setCurrentUser(username);   // ✅ use from JWT
       setRoomId(response.roomId);
       setConnected(true);
       setShowCreateModal(false);
@@ -375,17 +382,25 @@ const JoinCreateChat = () => {
           </div>
         </div>
 
-        {/* Username input */}
-        <div className="px-4 pt-4 pb-2">
-          <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1.5 block">Your Username</label>
-          <input
-            type="text"
-            name="userName"
-            value={detail.userName}
-            onChange={(e) => setDetail({ ...detail, userName: e.target.value })}
-            placeholder="Set your name…"
-            className="w-full bg-[#2b2d31] border border-white/5 text-white placeholder-gray-600 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition"
-          />
+        {/* Logged-in user display */}
+        <div className="px-4 pt-4 pb-3">
+          <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1.5 block">
+            Logged in as
+          </label>
+          <div className="flex items-center gap-2.5 bg-[#2b2d31] border border-white/5 px-3 py-2 rounded-lg">
+            {/* Avatar circle with first letter */}
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
+              style={{ background: stringToColor(username || "?") }}
+            >
+              {username?.[0]?.toUpperCase() || "?"}
+            </div>
+            <span className="text-white text-sm font-semibold truncate">
+              {username || "Unknown"}
+            </span>
+            {/* Online indicator */}
+            <span className="ml-auto w-2 h-2 rounded-full bg-green-400 flex-shrink-0" />
+          </div>
         </div>
 
         {/* Section header */}
@@ -420,7 +435,7 @@ const JoinCreateChat = () => {
                   <span className="text-sm font-semibold truncate">#{room.roomId}</span>
                   {room.active && <span className="w-1.5 h-1.5 rounded-full bg-green-400 flex-shrink-0 ml-1" />}
                 </div>
-                <p className="text-[10px] text-gray-500 group-hover:text-gray-400 transition">{room.members} members</p>
+                <p className="text-[10px] text-gray-500 group-hover:text-gray-400 transition">Click to join</p>
               </div>
             </button>
           ))}
@@ -454,7 +469,7 @@ const JoinCreateChat = () => {
            *    It's fine for 1-2 levels (like here). For deep trees, use
            *    Context API or a state manager (Redux/Zustand) instead.
            */}
-          <AiChatPanel username={detail.userName} />
+          <AiChatPanel username={username} />
         </div>
       </div>
 

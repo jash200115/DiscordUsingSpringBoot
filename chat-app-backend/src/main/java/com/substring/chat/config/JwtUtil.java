@@ -25,6 +25,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("roles", user.getRoles())
+                .claim("username", user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -49,6 +50,15 @@ public class JwtUtil {
         return claims.get("roles", List.class);
     }
 
+    public String extractUsername(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("username", String.class);
+    }
+    
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()

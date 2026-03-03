@@ -183,6 +183,7 @@ const HomePage = () => {
   const [shakeKey, setShakeKey] = useState(0);
 
   // Form fields
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -197,6 +198,7 @@ const HomePage = () => {
     setEmail("");
     setPassword("");
     setConfirmPassword("");
+    setUsername("");
   };
 
   // ── Submit handler ──
@@ -221,7 +223,7 @@ const HomePage = () => {
         toast.success("Welcome back! 👋");
         navigate("/chat");
       } else {
-        await axios.post("http://localhost:8080/api/auth/register", { email, password });
+        await axios.post("http://localhost:8080/api/auth/register", { email, username, password });
         toast.success("Account created! Logging you in...");
         // Auto-login after register
         const res = await axios.post("http://localhost:8080/api/auth/login", { email, password });
@@ -340,6 +342,14 @@ const HomePage = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
             autoComplete="email"
+          />
+          <InputField
+            label="Username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="cooluser123"
+            autoComplete="username"
           />
           <InputField
             label="Password"

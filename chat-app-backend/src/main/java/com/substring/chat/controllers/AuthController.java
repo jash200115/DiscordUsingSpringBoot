@@ -33,7 +33,7 @@ public class AuthController {
 
         User user = User.builder()
                 .email(request.getEmail())
-                .username(request.getEmail())
+                .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(List.of("ROLE_USER"))
                 .build();

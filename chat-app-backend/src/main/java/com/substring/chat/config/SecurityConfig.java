@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/v1/nexchat/**").permitAll()
                         .requestMatchers("/chat/**").permitAll()
+                        .requestMatchers("/api/v1/rooms").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/user/**").hasRole("USER")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()// allow websocket handshake
