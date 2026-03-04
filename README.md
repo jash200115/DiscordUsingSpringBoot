@@ -2,7 +2,7 @@
 
 > A full-stack, production-grade real-time messaging platform built with **Spring Boot**, **React**, **WebSockets (STOMP/SockJS)**, **MongoDB**, and **Spring AI**. Inspired by Discord's UI, featuring room-based chat, JWT authentication, AI assistant, collaborative whiteboard, GIF/emoji support, and file sharing.
 
-
+<video controls src="Screen Recording 2026-03-05 015033.mp4" title="Demo"></video>
 
 ---
 
