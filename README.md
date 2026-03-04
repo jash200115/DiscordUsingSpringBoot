@@ -451,7 +451,7 @@ JWT Flow:
 
 ## 🤖 AI Integration
 
-**Spring AI** abstracts LLM providers. This project uses **OpenRouter** (OpenAI-compatible API) with `openai/gpt-oss-120b:free`.
+**Spring AI** abstracts LLM providers. This project uses **Groq** (OpenAI-compatible API) with `llama-3.3-70b-versatile`.
 
 ### How Conversation Memory Works
 
@@ -470,8 +470,6 @@ User: "Multiply that by 3"
 
 **System Prompt:** "You are NexChat AI, a helpful, friendly, and concise assistant..."
 
-**Interview Answer:** "LLMs are stateless — each API call is independent. To simulate memory, we store the entire conversation history in MongoDB and prepend it to every new prompt. This is the 'message window' pattern. Production systems use vector databases (RAG) for long-term memory or truncate history to fit the context window."
-
 ---
 
 ## 🚀 Getting Started
@@ -489,10 +487,14 @@ User: "Multiply that by 3"
 cd chat-app-backend
 
 # Configure application.properties:
-# spring.mongodb.uri=mongodb://localhost:27017/chatapp
-# spring.ai.openai.api-key=YOUR_OPENROUTER_KEY
-# spring.ai.openai.base-url=https://openrouter.ai/api/v1
-# spring.ai.openai.chat.model=openai/gpt-oss-120b:free
+spring.application.name=chat-app-backend
+# use MONGO_URI from Render env
+spring.mongodb.uri=mongodb://localhost:27017/chatapp
+# Render provides PORT, fallback to 8080
+spring.data.mongodb.auto-index-creation=true
+spring.ai.openai.api-key=<GROQ_API_KEY>
+spring.ai.openai.base-url=https://api.groq.com/openai
+spring.ai.openai.chat.options.model=llama-3.3-70b-versatile
 
 mvn spring-boot:run
 # Server starts on http://localhost:8080
